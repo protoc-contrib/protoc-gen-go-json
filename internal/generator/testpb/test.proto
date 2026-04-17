@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package tests;
+
+option go_package = "github.com/protoc-contrib/protoc-gen-go-json/internal/generator/testpb";
+
+// Basic covers scalar fields, oneofs, maps, and proto3 optional presence.
+message Basic {
+  string a = 1;
+
+  oneof b {
+    int32 int = 2;
+    string str = 3;
+  }
+
+  map<string, string> map = 4;
+
+  optional string o = 5;
+}
+
+// Nested exercises nested message emission.
+message Nested {
+  message Message {
+    Basic basic = 1;
+  }
+}
+
+// WithEnum exercises enum rendering.
+message WithEnum {
+  enum Kind {
+    UNKNOWN = 0;
+    ONE = 1;
+    TWO = 2;
+  }
+  Kind kind = 1;
+}

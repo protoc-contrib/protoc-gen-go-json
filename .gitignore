@@ -1,2 +1,5 @@
-build
-protoc-gen-go-json*
+.idea
+.clang-format
+.bin
+/result
+coverage.out
