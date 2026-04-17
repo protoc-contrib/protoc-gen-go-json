@@ -20,7 +20,7 @@
           inherit version;
           src = pkgs.lib.cleanSource ./.;
           subPackages = [ "cmd/protoc-gen-go-json" ];
-          vendorHash = "sha256-4qITWj5a1wwQqt+Wm1QFjbJsFkGYSGzXvf+iBPTHkDk=";
+          vendorHash = "sha256-KLrEjd4dBG3zNrz2wTP4dBbGE5kImdCkv+NG7wD3WxM=";
           ldflags = [ "-s" "-w" ];
           meta = with pkgs.lib; {
             description = "A protoc plugin that generates MarshalJSON and UnmarshalJSON methods backed by protojson";
