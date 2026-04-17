@@ -7,6 +7,7 @@
 package testpb
 
 import (
+	_ "github.com/protoc-contrib/protoc-gen-go-json/protoc_contrib/json"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -20,6 +21,103 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+// Standalone enum at file scope.
+type TopLevelKind int32
+
+const (
+	TopLevelKind_TOP_LEVEL_KIND_UNSPECIFIED TopLevelKind = 0
+	TopLevelKind_TOP_LEVEL_KIND_A           TopLevelKind = 1
+	TopLevelKind_TOP_LEVEL_KIND_B           TopLevelKind = 2
+)
+
+// Enum value maps for TopLevelKind.
+var (
+	TopLevelKind_name = map[int32]string{
+		0: "TOP_LEVEL_KIND_UNSPECIFIED",
+		1: "TOP_LEVEL_KIND_A",
+		2: "TOP_LEVEL_KIND_B",
+	}
+	TopLevelKind_value = map[string]int32{
+		"TOP_LEVEL_KIND_UNSPECIFIED": 0,
+		"TOP_LEVEL_KIND_A":           1,
+		"TOP_LEVEL_KIND_B":           2,
+	}
+)
+
+func (x TopLevelKind) Enum() *TopLevelKind {
+	p := new(TopLevelKind)
+	*p = x
+	return p
+}
+
+func (x TopLevelKind) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TopLevelKind) Descriptor() protoreflect.EnumDescriptor {
+	return file_test_proto_enumTypes[0].Descriptor()
+}
+
+func (TopLevelKind) Type() protoreflect.EnumType {
+	return &file_test_proto_enumTypes[0]
+}
+
+func (x TopLevelKind) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TopLevelKind.Descriptor instead.
+func (TopLevelKind) EnumDescriptor() ([]byte, []int) {
+	return file_test_proto_rawDescGZIP(), []int{0}
+}
+
+// SkippedEnum opts out of JSON method generation.
+type SkippedEnum int32
+
+const (
+	SkippedEnum_SKIPPED_ENUM_UNSPECIFIED SkippedEnum = 0
+	SkippedEnum_SKIPPED_ENUM_A           SkippedEnum = 1
+)
+
+// Enum value maps for SkippedEnum.
+var (
+	SkippedEnum_name = map[int32]string{
+		0: "SKIPPED_ENUM_UNSPECIFIED",
+		1: "SKIPPED_ENUM_A",
+	}
+	SkippedEnum_value = map[string]int32{
+		"SKIPPED_ENUM_UNSPECIFIED": 0,
+		"SKIPPED_ENUM_A":           1,
+	}
+)
+
+func (x SkippedEnum) Enum() *SkippedEnum {
+	p := new(SkippedEnum)
+	*p = x
+	return p
+}
+
+func (x SkippedEnum) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SkippedEnum) Descriptor() protoreflect.EnumDescriptor {
+	return file_test_proto_enumTypes[1].Descriptor()
+}
+
+func (SkippedEnum) Type() protoreflect.EnumType {
+	return &file_test_proto_enumTypes[1]
+}
+
+func (x SkippedEnum) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SkippedEnum.Descriptor instead.
+func (SkippedEnum) EnumDescriptor() ([]byte, []int) {
+	return file_test_proto_rawDescGZIP(), []int{1}
+}
 
 type WithEnum_Kind int32
 
@@ -54,11 +152,11 @@ func (x WithEnum_Kind) String() string {
 }
 
 func (WithEnum_Kind) Descriptor() protoreflect.EnumDescriptor {
-	return file_test_proto_enumTypes[0].Descriptor()
+	return file_test_proto_enumTypes[2].Descriptor()
 }
 
 func (WithEnum_Kind) Type() protoreflect.EnumType {
-	return &file_test_proto_enumTypes[0]
+	return &file_test_proto_enumTypes[2]
 }
 
 func (x WithEnum_Kind) Number() protoreflect.EnumNumber {
@@ -259,6 +357,52 @@ func (x *WithEnum) GetKind() WithEnum_Kind {
 	return WithEnum_UNKNOWN
 }
 
+// SkippedMessage opts out of JSON method generation — users can
+// hand-roll their own MarshalJSON for this type.
+type SkippedMessage struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Value         string                 `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SkippedMessage) Reset() {
+	*x = SkippedMessage{}
+	mi := &file_test_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SkippedMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SkippedMessage) ProtoMessage() {}
+
+func (x *SkippedMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_test_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SkippedMessage.ProtoReflect.Descriptor instead.
+func (*SkippedMessage) Descriptor() ([]byte, []int) {
+	return file_test_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *SkippedMessage) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
 type Nested_Message struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Basic         *Basic                 `protobuf:"bytes,1,opt,name=basic,proto3" json:"basic,omitempty"`
@@ -268,7 +412,7 @@ type Nested_Message struct {
 
 func (x *Nested_Message) Reset() {
 	*x = Nested_Message{}
-	mi := &file_test_proto_msgTypes[4]
+	mi := &file_test_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -280,7 +424,7 @@ func (x *Nested_Message) String() string {
 func (*Nested_Message) ProtoMessage() {}
 
 func (x *Nested_Message) ProtoReflect() protoreflect.Message {
-	mi := &file_test_proto_msgTypes[4]
+	mi := &file_test_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -308,7 +452,7 @@ var File_test_proto protoreflect.FileDescriptor
 const file_test_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"test.proto\x12\x05tests\"\xbc\x01\n" +
+	"test.proto\x12\x05tests\x1a!protoc_contrib/json/options.proto\"\xbc\x01\n" +
 	"\x05Basic\x12\f\n" +
 	"\x01a\x18\x01 \x01(\tR\x01a\x12\x12\n" +
 	"\x03int\x18\x02 \x01(\x05H\x00R\x03int\x12\x12\n" +
@@ -328,7 +472,16 @@ const file_test_proto_rawDesc = "" +
 	"\x04Kind\x12\v\n" +
 	"\aUNKNOWN\x10\x00\x12\a\n" +
 	"\x03ONE\x10\x01\x12\a\n" +
-	"\x03TWO\x10\x02BHZFgithub.com/protoc-contrib/protoc-gen-go-json/internal/generator/testpbb\x06proto3"
+	"\x03TWO\x10\x02\",\n" +
+	"\x0eSkippedMessage\x12\x14\n" +
+	"\x05value\x18\x01 \x01(\tR\x05value:\x04\xe0\xf3\x1a\x01*Z\n" +
+	"\fTopLevelKind\x12\x1e\n" +
+	"\x1aTOP_LEVEL_KIND_UNSPECIFIED\x10\x00\x12\x14\n" +
+	"\x10TOP_LEVEL_KIND_A\x10\x01\x12\x14\n" +
+	"\x10TOP_LEVEL_KIND_B\x10\x02*E\n" +
+	"\vSkippedEnum\x12\x1c\n" +
+	"\x18SKIPPED_ENUM_UNSPECIFIED\x10\x00\x12\x12\n" +
+	"\x0eSKIPPED_ENUM_A\x10\x01\x1a\x04\xe0\xf3\x1a\x01BHZFgithub.com/protoc-contrib/protoc-gen-go-json/internal/generator/testpbb\x06proto3"
 
 var (
 	file_test_proto_rawDescOnce sync.Once
@@ -342,20 +495,23 @@ func file_test_proto_rawDescGZIP() []byte {
 	return file_test_proto_rawDescData
 }
 
-var file_test_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_test_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_test_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_test_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_test_proto_goTypes = []any{
-	(WithEnum_Kind)(0),     // 0: tests.WithEnum.Kind
-	(*Basic)(nil),          // 1: tests.Basic
-	(*Nested)(nil),         // 2: tests.Nested
-	(*WithEnum)(nil),       // 3: tests.WithEnum
-	nil,                    // 4: tests.Basic.MapEntry
-	(*Nested_Message)(nil), // 5: tests.Nested.Message
+	(TopLevelKind)(0),      // 0: tests.TopLevelKind
+	(SkippedEnum)(0),       // 1: tests.SkippedEnum
+	(WithEnum_Kind)(0),     // 2: tests.WithEnum.Kind
+	(*Basic)(nil),          // 3: tests.Basic
+	(*Nested)(nil),         // 4: tests.Nested
+	(*WithEnum)(nil),       // 5: tests.WithEnum
+	(*SkippedMessage)(nil), // 6: tests.SkippedMessage
+	nil,                    // 7: tests.Basic.MapEntry
+	(*Nested_Message)(nil), // 8: tests.Nested.Message
 }
 var file_test_proto_depIdxs = []int32{
-	4, // 0: tests.Basic.map:type_name -> tests.Basic.MapEntry
-	0, // 1: tests.WithEnum.kind:type_name -> tests.WithEnum.Kind
-	1, // 2: tests.Nested.Message.basic:type_name -> tests.Basic
+	7, // 0: tests.Basic.map:type_name -> tests.Basic.MapEntry
+	2, // 1: tests.WithEnum.kind:type_name -> tests.WithEnum.Kind
+	3, // 2: tests.Nested.Message.basic:type_name -> tests.Basic
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -377,8 +533,8 @@ func file_test_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_test_proto_rawDesc), len(file_test_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   5,
+			NumEnums:      3,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

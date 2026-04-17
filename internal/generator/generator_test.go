@@ -123,6 +123,72 @@ var _ = Describe("generator.Generate", func() {
 		Expect(out).To(ContainSubstring("UseProtoNames:   true"))
 		Expect(out).To(ContainSubstring("DiscardUnknown: true"))
 	})
+
+	It("honors the json.skip message extension", func() {
+		resp, err := runGenerator(nil, testpb.File_test_proto)
+		Expect(err).NotTo(HaveOccurred())
+
+		out := emittedContent(resp)
+		Expect(out).NotTo(ContainSubstring("SkippedMessage"))
+	})
+
+	It("honors the json.enum_skip enum extension", func() {
+		resp, err := runGenerator(nil, testpb.File_test_proto)
+		Expect(err).NotTo(HaveOccurred())
+
+		out := emittedContent(resp)
+		Expect(out).NotTo(ContainSubstring("SkippedEnum"))
+	})
+
+	It("emits MarshalJSON and UnmarshalJSON for top-level and nested enums", func() {
+		resp, err := runGenerator(nil, testpb.File_test_proto)
+		Expect(err).NotTo(HaveOccurred())
+
+		out := emittedContent(resp)
+		for _, name := range []string{"TopLevelKind", "WithEnum_Kind"} {
+			Expect(out).To(ContainSubstring("func (x " + name + ") MarshalJSON()"))
+			Expect(out).To(ContainSubstring("func (x *" + name + ") UnmarshalJSON("))
+			Expect(out).To(ContainSubstring(name + "_value[s]"))
+		}
+	})
+
+	It("renders enums via their string names by default", func() {
+		resp, err := runGenerator(nil, testpb.File_test_proto)
+		Expect(err).NotTo(HaveOccurred())
+
+		out := emittedContent(resp)
+		Expect(out).To(ContainSubstring("json.Marshal(x.String())"))
+		Expect(out).NotTo(ContainSubstring("strconv.FormatInt(int64(x)"))
+	})
+
+	It("renders enums as integers when enums_as_ints is set", func() {
+		opts := &generator.Options{EnumsAsInts: true}
+		resp, err := runGenerator(opts, testpb.File_test_proto)
+		Expect(err).NotTo(HaveOccurred())
+
+		out := emittedContent(resp)
+		Expect(out).To(ContainSubstring("strconv.FormatInt(int64(x), 10)"))
+		Expect(out).NotTo(ContainSubstring("json.Marshal(x.String())"))
+	})
+
+	It("emits Multiline and Indent when indent option is set", func() {
+		opts := &generator.Options{Indent: "  "}
+		resp, err := runGenerator(opts, testpb.File_test_proto)
+		Expect(err).NotTo(HaveOccurred())
+
+		out := emittedContent(resp)
+		Expect(out).To(ContainSubstring("Multiline:       true"))
+		Expect(out).To(ContainSubstring(`Indent:          "  "`))
+	})
+
+	It("omits Multiline and Indent when indent is empty", func() {
+		resp, err := runGenerator(nil, testpb.File_test_proto)
+		Expect(err).NotTo(HaveOccurred())
+
+		out := emittedContent(resp)
+		Expect(out).NotTo(ContainSubstring("Multiline:"))
+		Expect(out).NotTo(ContainSubstring("Indent:"))
+	})
 })
 
 var _ = Describe("generator.Options.Set", func() {
@@ -152,5 +218,11 @@ var _ = Describe("generator.Options.Set", func() {
 	It("rejects non-boolean values", func() {
 		opts := &generator.Options{}
 		Expect(opts.Set("emit_defaults", "maybe")).To(MatchError(ContainSubstring("invalid boolean value")))
+	})
+
+	It("parses indent as a plain string", func() {
+		opts := &generator.Options{}
+		Expect(opts.Set("indent", "\t")).To(Succeed())
+		Expect(opts.Indent).To(Equal("\t"))
 	})
 })

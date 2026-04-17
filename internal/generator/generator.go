@@ -3,7 +3,13 @@
 package generator
 
 import (
+	"strconv"
+
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+
+	json "github.com/protoc-contrib/protoc-gen-go-json/protoc_contrib/json"
 )
 
 const (
@@ -30,8 +36,9 @@ func Generate(plugin *protogen.Plugin, opts *Options) error {
 }
 
 func generateFile(plugin *protogen.Plugin, file *protogen.File, opts *Options) {
-	messages := collectMessages(file.Messages)
-	if len(messages) == 0 {
+	messages := emittableMessages(collectMessages(file.Messages))
+	enums := emittableEnums(collectEnums(file))
+	if len(messages) == 0 && len(enums) == 0 {
 		return
 	}
 
@@ -46,6 +53,9 @@ func generateFile(plugin *protogen.Plugin, file *protogen.File, opts *Options) {
 
 	for _, msg := range messages {
 		emitMessage(g, msg, opts)
+	}
+	for _, enum := range enums {
+		emitEnum(g, enum, opts)
 	}
 }
 
@@ -63,6 +73,66 @@ func collectMessages(msgs []*protogen.Message) []*protogen.Message {
 	return out
 }
 
+// collectEnums returns every enum declared in the file, both at file scope
+// and nested inside messages.
+func collectEnums(file *protogen.File) []*protogen.Enum {
+	var out []*protogen.Enum
+	out = append(out, file.Enums...)
+	var walk func(msgs []*protogen.Message)
+	walk = func(msgs []*protogen.Message) {
+		for _, m := range msgs {
+			if m.Desc.IsMapEntry() {
+				continue
+			}
+			out = append(out, m.Enums...)
+			walk(m.Messages)
+		}
+	}
+	walk(file.Messages)
+	return out
+}
+
+func emittableMessages(msgs []*protogen.Message) []*protogen.Message {
+	out := msgs[:0]
+	for _, m := range msgs {
+		if messageSkipped(m) {
+			continue
+		}
+		out = append(out, m)
+	}
+	return out
+}
+
+func emittableEnums(enums []*protogen.Enum) []*protogen.Enum {
+	out := enums[:0]
+	for _, e := range enums {
+		if enumSkipped(e) {
+			continue
+		}
+		out = append(out, e)
+	}
+	return out
+}
+
+func messageSkipped(msg *protogen.Message) bool {
+	return getBoolExt(msg.Desc.Options(), json.E_Skip)
+}
+
+func enumSkipped(enum *protogen.Enum) bool {
+	return getBoolExt(enum.Desc.Options(), json.E_EnumSkip)
+}
+
+func getBoolExt(opts protoreflect.ProtoMessage, ext protoreflect.ExtensionType) bool {
+	if opts == nil {
+		return false
+	}
+	if !proto.HasExtension(opts, ext) {
+		return false
+	}
+	v, ok := proto.GetExtension(opts, ext).(bool)
+	return ok && v
+}
+
 func emitMessage(g *protogen.GeneratedFile, msg *protogen.Message, opts *Options) {
 	marshal := protojsonImportPath.Ident("MarshalOptions")
 	unmarshal := protojsonImportPath.Ident("UnmarshalOptions")
@@ -73,6 +143,10 @@ func emitMessage(g *protogen.GeneratedFile, msg *protogen.Message, opts *Options
 	g.P("UseEnumNumbers:  ", opts.EnumsAsInts, ",")
 	g.P("EmitUnpopulated: ", opts.EmitDefaults, ",")
 	g.P("UseProtoNames:   ", opts.OrigName, ",")
+	if opts.Indent != "" {
+		g.P("Multiline:       true,")
+		g.P("Indent:          ", strconv.Quote(opts.Indent), ",")
+	}
 	g.P("}.Marshal(msg)")
 	g.P("}")
 	g.P()
@@ -82,6 +156,47 @@ func emitMessage(g *protogen.GeneratedFile, msg *protogen.Message, opts *Options
 	g.P("return ", unmarshal, "{")
 	g.P("DiscardUnknown: ", opts.AllowUnknownFields, ",")
 	g.P("}.Unmarshal(b, msg)")
+	g.P("}")
+	g.P()
+}
+
+func emitEnum(g *protogen.GeneratedFile, enum *protogen.Enum, opts *Options) {
+	encodingJSON := protogen.GoImportPath("encoding/json").Ident("Marshal")
+	encodingJSONUnmarshal := protogen.GoImportPath("encoding/json").Ident("Unmarshal")
+	strconvIdent := protogen.GoImportPath("strconv").Ident("FormatInt")
+	strconvParse := protogen.GoImportPath("strconv").Ident("ParseInt")
+	fmtErrorf := protogen.GoImportPath("fmt").Ident("Errorf")
+
+	g.P("// MarshalJSON implements json.Marshaler for enum ", enum.GoIdent, ".")
+	g.P("func (x ", enum.GoIdent, ") MarshalJSON() ([]byte, error) {")
+	if opts.EnumsAsInts {
+		g.P("return []byte(", strconvIdent, "(int64(x), 10)), nil")
+	} else {
+		g.P("return ", encodingJSON, "(x.String())")
+	}
+	g.P("}")
+	g.P()
+
+	g.P("// UnmarshalJSON implements json.Unmarshaler for enum ", enum.GoIdent, ".")
+	g.P("func (x *", enum.GoIdent, ") UnmarshalJSON(b []byte) error {")
+	g.P("if len(b) > 0 && b[0] != '\"' {")
+	g.P("n, err := ", strconvParse, "(string(b), 10, 32)")
+	g.P("if err != nil {")
+	g.P("return err")
+	g.P("}")
+	g.P("*x = ", enum.GoIdent, "(n)")
+	g.P("return nil")
+	g.P("}")
+	g.P("var s string")
+	g.P("if err := ", encodingJSONUnmarshal, "(b, &s); err != nil {")
+	g.P("return err")
+	g.P("}")
+	g.P("v, ok := ", enum.GoIdent, "_value[s]")
+	g.P("if !ok {")
+	g.P("return ", fmtErrorf, `("unknown `, enum.GoIdent.GoName, ` value %q", s)`)
+	g.P("}")
+	g.P("*x = ", enum.GoIdent, "(v)")
+	g.P("return nil")
 	g.P("}")
 	g.P()
 }

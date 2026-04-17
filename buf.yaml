@@ -1,12 +1,14 @@
 version: v2
 
 modules:
-  - path: internal/generator/testpb
+  - path: .
+    name: buf.build/protoc-contrib/protoc-gen-go-json
+    # Remove this `excludes` block when regenerating fixtures in internal/generator/testpb.
+    excludes:
+      - internal/generator/testpb
     lint:
       use:
         - BASIC
-      except:
-        - PACKAGE_DIRECTORY_MATCH
     breaking:
       use:
         - FILE

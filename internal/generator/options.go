@@ -26,6 +26,11 @@ type Options struct {
 	// AllowUnknownFields discards unknown fields during unmarshaling instead of
 	// erroring. Maps to protojson.UnmarshalOptions.DiscardUnknown.
 	AllowUnknownFields bool
+
+	// Indent is the string to use for indenting JSON output. When empty, output
+	// is compact single-line JSON. Any non-empty value switches protojson to
+	// multiline output. Maps to protojson.MarshalOptions.Indent.
+	Indent string
 }
 
 // Set applies a single `name=value` plugin parameter to the options. The signature
@@ -40,6 +45,9 @@ func (o *Options) Set(name, value string) error {
 		return parseBool(value, &o.OrigName)
 	case "allow_unknown":
 		return parseBool(value, &o.AllowUnknownFields)
+	case "indent":
+		o.Indent = value
+		return nil
 	default:
 		return fmt.Errorf("unknown plugin option %q", name)
 	}

@@ -4,7 +4,10 @@
 package testpb
 
 import (
+	json "encoding/json"
+	fmt "fmt"
 	protojson "google.golang.org/protobuf/encoding/protojson"
+	strconv "strconv"
 )
 
 // MarshalJSON implements json.Marshaler.
@@ -69,4 +72,58 @@ func (msg *WithEnum) UnmarshalJSON(b []byte) error {
 	return protojson.UnmarshalOptions{
 		DiscardUnknown: false,
 	}.Unmarshal(b, msg)
+}
+
+// MarshalJSON implements json.Marshaler for enum TopLevelKind.
+func (x TopLevelKind) MarshalJSON() ([]byte, error) {
+	return json.Marshal(x.String())
+}
+
+// UnmarshalJSON implements json.Unmarshaler for enum TopLevelKind.
+func (x *TopLevelKind) UnmarshalJSON(b []byte) error {
+	if len(b) > 0 && b[0] != '"' {
+		n, err := strconv.ParseInt(string(b), 10, 32)
+		if err != nil {
+			return err
+		}
+		*x = TopLevelKind(n)
+		return nil
+	}
+	var s string
+	if err := json.Unmarshal(b, &s); err != nil {
+		return err
+	}
+	v, ok := TopLevelKind_value[s]
+	if !ok {
+		return fmt.Errorf("unknown TopLevelKind value %q", s)
+	}
+	*x = TopLevelKind(v)
+	return nil
+}
+
+// MarshalJSON implements json.Marshaler for enum WithEnum_Kind.
+func (x WithEnum_Kind) MarshalJSON() ([]byte, error) {
+	return json.Marshal(x.String())
+}
+
+// UnmarshalJSON implements json.Unmarshaler for enum WithEnum_Kind.
+func (x *WithEnum_Kind) UnmarshalJSON(b []byte) error {
+	if len(b) > 0 && b[0] != '"' {
+		n, err := strconv.ParseInt(string(b), 10, 32)
+		if err != nil {
+			return err
+		}
+		*x = WithEnum_Kind(n)
+		return nil
+	}
+	var s string
+	if err := json.Unmarshal(b, &s); err != nil {
+		return err
+	}
+	v, ok := WithEnum_Kind_value[s]
+	if !ok {
+		return fmt.Errorf("unknown WithEnum_Kind value %q", s)
+	}
+	*x = WithEnum_Kind(v)
+	return nil
 }

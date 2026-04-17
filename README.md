@@ -28,11 +28,17 @@ The code generator has been rewritten on top of
 
 - `json.Marshaler` and `json.Unmarshaler` for every message declared in your
   `.proto` files, including nested messages.
+- `json.Marshaler` and `json.Unmarshaler` for every enum, so enums embedded
+  in non-proto Go structs still round-trip via their string names (or their
+  integer values when `enums_as_ints` is set).
 - Transparent interop with `encoding/json` — wrap a proto message in any
   other Go struct and the JSON is still canonical.
 - Configurable protojson behavior via plugin options (enum rendering, zero
-  values, original field names, tolerance for unknown fields).
-- Respects proto3 optional presence.
+  values, original field names, indentation, tolerance for unknown fields).
+- Per-message / per-enum opt-out via the `(protoc_contrib.json.skip)` and
+  `(protoc_contrib.json.enum_skip)` extensions, so you can hand-roll JSON
+  methods for specific types without forking the generator.
+- Respects proto3 optional presence and supports Protobuf Editions 2023.
 
 ## Installation
 
@@ -77,15 +83,16 @@ protoc \
 
 ## Options
 
-All options are booleans and are forwarded to `protojson.MarshalOptions` /
+Options are forwarded to `protojson.MarshalOptions` /
 `protojson.UnmarshalOptions`.
 
-| Option          | Default | Maps to                                   | Purpose                                                                |
-| --------------- | ------- | ----------------------------------------- | ---------------------------------------------------------------------- |
-| `enums_as_ints` | `false` | `MarshalOptions.UseEnumNumbers`           | Render enums as integers instead of their string names.                |
-| `emit_defaults` | `false` | `MarshalOptions.EmitUnpopulated`          | Emit fields whose value is the zero value for their type.              |
-| `orig_name`     | `false` | `MarshalOptions.UseProtoNames`            | Use the original `.proto` field names instead of `lowerCamelCase`.     |
-| `allow_unknown` | `false` | `UnmarshalOptions.DiscardUnknown`         | Ignore unknown fields during unmarshaling instead of returning errors. |
+| Option          | Default | Maps to                           | Purpose                                                                     |
+| --------------- | ------- | --------------------------------- | --------------------------------------------------------------------------- |
+| `enums_as_ints` | `false` | `MarshalOptions.UseEnumNumbers`   | Render enums as integers instead of their string names.                     |
+| `emit_defaults` | `false` | `MarshalOptions.EmitUnpopulated`  | Emit fields whose value is the zero value for their type.                   |
+| `orig_name`     | `false` | `MarshalOptions.UseProtoNames`    | Use the original `.proto` field names instead of `lowerCamelCase`.          |
+| `allow_unknown` | `false` | `UnmarshalOptions.DiscardUnknown` | Ignore unknown fields during unmarshaling instead of returning errors.      |
+| `indent`        | `""`    | `MarshalOptions.Indent`           | Pretty-print the output. Any non-empty value also sets `Multiline = true`.  |
 
 Pass them through `buf.gen.yaml`:
 
@@ -103,6 +110,38 @@ or on the protoc command line:
 
 ```bash
 protoc --go-json_opt=emit_defaults=true,orig_name=true ...
+```
+
+## Extensions
+
+For cases where a plugin-wide switch is too coarse, the
+`protoc_contrib.json` package ships two proto extensions that toggle
+generation per type:
+
+| Extension                          | Extends                            | Effect                                                                  |
+| ---------------------------------- | ---------------------------------- | ----------------------------------------------------------------------- |
+| `(protoc_contrib.json.skip)`       | `google.protobuf.MessageOptions`   | Skip emitting `MarshalJSON` / `UnmarshalJSON` for a specific message.   |
+| `(protoc_contrib.json.enum_skip)`  | `google.protobuf.EnumOptions`      | Skip emitting `MarshalJSON` / `UnmarshalJSON` for a specific enum.      |
+
+Use them when a message or enum needs a hand-written implementation that
+the protojson-based generator cannot express.
+
+```proto
+syntax = "proto3";
+package example;
+
+import "protoc_contrib/json/options.proto";
+
+message Custom {
+  option (protoc_contrib.json.skip) = true;
+  string value = 1;
+}
+
+enum Custom_Kind {
+  option (protoc_contrib.json.enum_skip) = true;
+  CUSTOM_KIND_UNSPECIFIED = 0;
+  CUSTOM_KIND_A = 1;
+}
 ```
 
 ## Example

@@ -4,6 +4,8 @@ package tests;
 
 option go_package = "github.com/protoc-contrib/protoc-gen-go-json/internal/generator/testpb";
 
+import "protoc_contrib/json/options.proto";
+
 // Basic covers scalar fields, oneofs, maps, and proto3 optional presence.
 message Basic {
   string a = 1;
@@ -33,4 +35,25 @@ message WithEnum {
     TWO = 2;
   }
   Kind kind = 1;
+}
+
+// Standalone enum at file scope.
+enum TopLevelKind {
+  TOP_LEVEL_KIND_UNSPECIFIED = 0;
+  TOP_LEVEL_KIND_A = 1;
+  TOP_LEVEL_KIND_B = 2;
+}
+
+// SkippedMessage opts out of JSON method generation — users can
+// hand-roll their own MarshalJSON for this type.
+message SkippedMessage {
+  option (protoc_contrib.json.skip) = true;
+  string value = 1;
+}
+
+// SkippedEnum opts out of JSON method generation.
+enum SkippedEnum {
+  option (protoc_contrib.json.enum_skip) = true;
+  SKIPPED_ENUM_UNSPECIFIED = 0;
+  SKIPPED_ENUM_A = 1;
 }
