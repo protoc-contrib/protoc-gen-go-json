@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.0.0...v1.1.0) (2026-04-17)
+
+
+### Features
+
+* update the dependencies ([6bd0428](https://github.com/protoc-contrib/protoc-gen-go-json/commit/6bd04287fb5306aba71618ee072eaff6b888ceee))
+
+
+### Bug Fixes
+
+* set vendorHash for protoc-gen-go-json ([3689db7](https://github.com/protoc-contrib/protoc-gen-go-json/commit/3689db73b0f2fe4437ccea6779ca2ccec0d42b2f))
+
 ## 1.0.0 (2026-04-17)
 
 
