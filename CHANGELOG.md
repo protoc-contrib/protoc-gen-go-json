@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.1.0...v1.1.1) (2026-04-17)
+
+
+### Bug Fixes
+
+* **flake:** update vendorHash for protoc-gen-go-json ([d037be2](https://github.com/protoc-contrib/protoc-gen-go-json/commit/d037be23246b3afeeac5478e8549107cf842c924))
+
 ## [1.1.0](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.0.0...v1.1.0) (2026-04-17)
 
 
