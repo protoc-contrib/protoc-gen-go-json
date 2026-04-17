@@ -13,6 +13,9 @@ const (
 
 // Generate walks every proto file scheduled for generation and emits a
 // *.pb.json.go companion containing the MarshalJSON and UnmarshalJSON methods.
+//
+// The error return is currently always nil; it is reserved so future
+// validation can report problems without breaking the signature.
 func Generate(plugin *protogen.Plugin, opts *Options) error {
 	if opts == nil {
 		opts = &Options{}

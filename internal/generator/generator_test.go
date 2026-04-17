@@ -1,6 +1,8 @@
 package generator_test
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -56,7 +58,7 @@ func emittedContent(resp *pluginpb.CodeGeneratorResponse) string {
 
 var _ = Describe("generator.Generate", func() {
 	It("emits MarshalJSON and UnmarshalJSON for every message including nested ones", func() {
-		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
+		resp, err := runGenerator(nil, testpb.File_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 		Expect(resp.Error).To(BeNil())
 		Expect(resp.File).To(HaveLen(1))
@@ -72,7 +74,7 @@ var _ = Describe("generator.Generate", func() {
 	})
 
 	It("skips synthetic map entry messages", func() {
-		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
+		resp, err := runGenerator(nil, testpb.File_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -80,7 +82,7 @@ var _ = Describe("generator.Generate", func() {
 	})
 
 	It("defaults every protojson flag to false when no options are set", func() {
-		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
+		resp, err := runGenerator(nil, testpb.File_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -90,6 +92,21 @@ var _ = Describe("generator.Generate", func() {
 		Expect(out).To(ContainSubstring("DiscardUnknown: false"))
 	})
 
+	It("matches the checked-in golden output for the testpb fixture", func() {
+		resp, err := runGenerator(nil, testpb.File_test_proto)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(resp.File).To(HaveLen(1))
+
+		// The golden file is the generated file we commit alongside the
+		// fixture proto. Running `buf generate` at the repo root keeps this
+		// up to date; this test fails loudly if the generator drifts from it.
+		goldenPath := filepath.Join("testpb", "test.pb.json.go")
+		want, err := os.ReadFile(goldenPath)
+		Expect(err).NotTo(HaveOccurred())
+
+		Expect(resp.File[0].GetContent()).To(Equal(string(want)))
+	})
+
 	It("propagates plugin options into the generated MarshalOptions", func() {
 		opts := &generator.Options{
 			EnumsAsInts:        true,
@@ -97,7 +114,7 @@ var _ = Describe("generator.Generate", func() {
 			OrigName:           true,
 			AllowUnknownFields: true,
 		}
-		resp, err := runGenerator(opts, testpb.File_internal_generator_testpb_test_proto)
+		resp, err := runGenerator(opts, testpb.File_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -113,13 +130,18 @@ var _ = Describe("generator.Options.Set", func() {
 		opts := &generator.Options{}
 		Expect(opts.Set("enums_as_ints", "true")).To(Succeed())
 		Expect(opts.Set("emit_defaults", "1")).To(Succeed())
-		Expect(opts.Set("orig_name", "")).To(Succeed())
+		Expect(opts.Set("orig_name", "t")).To(Succeed())
 		Expect(opts.Set("allow_unknown", "false")).To(Succeed())
 
 		Expect(opts.EnumsAsInts).To(BeTrue())
 		Expect(opts.EmitDefaults).To(BeTrue())
 		Expect(opts.OrigName).To(BeTrue())
 		Expect(opts.AllowUnknownFields).To(BeFalse())
+	})
+
+	It("rejects a flag without a value", func() {
+		opts := &generator.Options{}
+		Expect(opts.Set("emit_defaults", "")).To(MatchError(ContainSubstring("missing value")))
 	})
 
 	It("rejects unknown flags", func() {

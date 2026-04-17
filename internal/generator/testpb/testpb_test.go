@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"google.golang.org/protobuf/proto"
+
 	"github.com/protoc-contrib/protoc-gen-go-json/internal/generator/testpb"
 )
 
@@ -12,28 +14,18 @@ import (
 // through encoding/json to verify they honor json.Marshaler / json.Unmarshaler
 // contracts, including oneofs, maps, proto3 optional, and nested messages.
 func TestRoundTrip(t *testing.T) {
-	type basicWrapper struct{ testpb.Basic }
 	present := "present"
 	empty := ""
 
 	cases := []struct {
 		name  string
-		value any
+		value proto.Message
 	}{
 		{
 			name: "basic with oneof int",
 			value: &testpb.Basic{
 				A: "hello",
 				B: &testpb.Basic_Int{Int: 42},
-			},
-		},
-		{
-			name: "basic wrapped in go struct",
-			value: &basicWrapper{
-				Basic: testpb.Basic{
-					A: "hello",
-					B: &testpb.Basic_Int{Int: 42},
-				},
 			},
 		},
 		{
@@ -82,13 +74,41 @@ func TestRoundTrip(t *testing.T) {
 				t.Fatal("marshal produced empty output")
 			}
 
-			got := reflect.New(reflect.ValueOf(tc.value).Elem().Type()).Interface()
+			got := reflect.New(reflect.ValueOf(tc.value).Elem().Type()).Interface().(proto.Message)
 			if err := json.Unmarshal(bs, got); err != nil {
 				t.Fatalf("unmarshal: %v", err)
 			}
-			if !reflect.DeepEqual(got, tc.value) {
+			if !proto.Equal(got, tc.value) {
 				t.Fatalf("roundtrip mismatch:\n got:  %+v\n want: %+v", got, tc.value)
 			}
 		})
+	}
+}
+
+// TestRoundTripEmbedded covers the embedded-by-value case — a Go struct that
+// embeds a proto message. proto.Equal does not apply, so we rely on
+// reflect.DeepEqual. Kept separate from TestRoundTrip so the proto-native
+// cases use proto.Equal.
+func TestRoundTripEmbedded(t *testing.T) {
+	type basicWrapper struct{ testpb.Basic }
+
+	want := &basicWrapper{
+		Basic: testpb.Basic{
+			A: "hello",
+			B: &testpb.Basic_Int{Int: 42},
+		},
+	}
+
+	bs, err := json.Marshal(want)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+
+	got := &basicWrapper{}
+	if err := json.Unmarshal(bs, got); err != nil {
+		t.Fatalf("unmarshal: %v", err)
+	}
+	if !proto.Equal(&got.Basic, &want.Basic) {
+		t.Fatalf("roundtrip mismatch:\n got:  %+v\n want: %+v", got, want)
 	}
 }

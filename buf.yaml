@@ -1,13 +1,12 @@
 version: v2
 
 modules:
-  - path: .
-    # Remove this `excludes` block when regenerating fixtures in internal/generator/testpb.
-    excludes:
-      - internal/generator/testpb
+  - path: internal/generator/testpb
     lint:
       use:
         - BASIC
+      except:
+        - PACKAGE_DIRECTORY_MATCH
     breaking:
       use:
         - FILE

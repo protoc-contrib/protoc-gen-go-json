@@ -7,9 +7,9 @@ permissions:
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   build:
@@ -25,6 +25,9 @@ jobs:
 
       - name: Setup Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v13
+
+      - name: Lint protos
+        run: nix develop --command buf lint
 
       - name: Run Tests
         run: nix develop --command go tool ginkgo run -r -coverprofile=coverage.out
@@ -52,7 +55,7 @@ jobs:
         with:
           manifest-file: .github/config/release-please-manifest.json
           config-file: .github/config/release-please-config.json
-          target-branch: master
+          target-branch: main
 
   build-release:
     needs: release

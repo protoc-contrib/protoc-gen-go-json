@@ -1,7 +1,7 @@
 # protoc-gen-go-json
 
 [![CI](https://github.com/protoc-contrib/protoc-gen-go-json/actions/workflows/ci.yml/badge.svg)](https://github.com/protoc-contrib/protoc-gen-go-json/actions/workflows/ci.yml)
-[![Coverage](https://raw.githubusercontent.com/protoc-contrib/protoc-gen-go-json/master/.github/octocov/badge.svg)](https://github.com/protoc-contrib/protoc-gen-go-json/actions/workflows/ci.yml)
+[![Coverage](https://raw.githubusercontent.com/protoc-contrib/protoc-gen-go-json/main/.github/octocov/badge.svg)](https://github.com/protoc-contrib/protoc-gen-go-json/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/protoc-contrib/protoc-gen-go-json?include_prereleases)](https://github.com/protoc-contrib/protoc-gen-go-json/releases)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE.md)
 [![Go](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go&logoColor=white)](https://go.dev)
@@ -165,8 +165,8 @@ go test ./...
 
 Or, without Nix, ensure `go`, `protoc`, and `buf` are on your `PATH`.
 
-To regenerate the fixtures in `internal/generator/testpb/`, temporarily remove
-the `excludes` block from `buf.yaml` and run `buf generate`.
+To regenerate the fixtures in `internal/generator/testpb/`, run `buf generate`
+from the repository root.
 
 ## License
 

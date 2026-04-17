@@ -47,8 +47,7 @@ func (o *Options) Set(name, value string) error {
 
 func parseBool(value string, dst *bool) error {
 	if value == "" {
-		*dst = true
-		return nil
+		return fmt.Errorf("missing value, expected true or false")
 	}
 	b, err := strconv.ParseBool(value)
 	if err != nil {

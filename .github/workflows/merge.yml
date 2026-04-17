@@ -1,29 +1,23 @@
-name: Auto Merge
+name: Auto Merge Dependabot
 
 on:
   pull_request:
 
-permissions: write-all
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   automerge:
     if: ${{ github.actor == 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
-      - name: automerge
-        uses: actions/github-script@v9.0.0
-        with:
-          script: |
-            github.rest.pulls.createReview({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
-              event: 'APPROVE'
-            })
-            github.rest.pulls.merge({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
-              merge_method: "rebase",
-            })
-          github-token: ${{ github.token }}
+      # `gh pr merge --auto` enables GitHub's native auto-merge, which waits
+      # for every required status check on the target branch before merging.
+      # Branch protection with required checks must be configured on `main`
+      # for this gate to actually delay the merge.
+      - name: Enable GitHub auto-merge
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge --auto --rebase "$PR_URL"

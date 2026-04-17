@@ -21,7 +21,7 @@
           src = pkgs.lib.cleanSource ./.;
           subPackages = [ "cmd/protoc-gen-go-json" ];
           vendorHash = null;
-          ldflags = [ "-s" "-w" "-X main.version=${version}" ];
+          ldflags = [ "-s" "-w" ];
           meta = with pkgs.lib; {
             description = "A protoc plugin that generates MarshalJSON and UnmarshalJSON methods backed by protojson";
             license = licenses.asl20;
