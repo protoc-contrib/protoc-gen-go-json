@@ -1,7 +1,6 @@
 # protoc-gen-go-json
 
 [![CI](https://github.com/protoc-contrib/protoc-gen-go-json/actions/workflows/ci.yml/badge.svg)](https://github.com/protoc-contrib/protoc-gen-go-json/actions/workflows/ci.yml)
-[![Coverage](https://raw.githubusercontent.com/protoc-contrib/protoc-gen-go-json/main/.github/octocov/badge.svg)](https://github.com/protoc-contrib/protoc-gen-go-json/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/protoc-contrib/protoc-gen-go-json?include_prereleases)](https://github.com/protoc-contrib/protoc-gen-go-json/releases)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE.md)
 [![Go](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go&logoColor=white)](https://go.dev)
