@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.2](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.1.1...v1.1.2) (2026-04-23)
+
+
+### Bug Fixes
+
+* bump CI runner from macos-14 to macos-15 ([e7f00a3](https://github.com/protoc-contrib/protoc-gen-go-json/commit/e7f00a352949f316a688aed8c6c643755218ede0))
+* check out source in publish job so buf push finds flake.nix ([4142149](https://github.com/protoc-contrib/protoc-gen-go-json/commit/4142149cb82a3b27a22c520277803a6e2846d0f4))
+
 ## [1.1.1](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.1.0...v1.1.1) (2026-04-17)
 
 
