@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.1.2...v1.1.3) (2026-05-05)
+
+
+### Bug Fixes
+
+* **github:** correct action versions in update.yml ([17344d1](https://github.com/protoc-contrib/protoc-gen-go-json/commit/17344d1ab915dbcf7d25d8893e0f7223f1f01f23))
+
 ## [1.1.2](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.1.1...v1.1.2) (2026-04-23)
 
 
