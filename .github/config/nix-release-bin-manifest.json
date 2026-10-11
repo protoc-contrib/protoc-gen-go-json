@@ -2,12 +2,12 @@
   "assets": {
     "aarch64-darwin": {
       "hash": "sha256-bgBvmEyv+nlsJMRNbWhRkyGvC6A7NIQ+QuRCzmk9K5E=",
-      "url": "https://github.com/protoc-contrib/protoc-gen-go-json/releases/download/v2.0.0/protoc-gen-go-json-aarch64-darwin"
+      "url": "https://github.com/protoc-contrib/protoc-gen-go-json/releases/download/v1.2.0/protoc-gen-go-json-aarch64-darwin"
     },
     "x86_64-linux": {
       "hash": "sha256-aNc5wvhta3tNyxgAwhMZ5JXuTopUjZOlNQ+vqi1mxTI=",
-      "url": "https://github.com/protoc-contrib/protoc-gen-go-json/releases/download/v2.0.0/protoc-gen-go-json-x86_64-linux"
+      "url": "https://github.com/protoc-contrib/protoc-gen-go-json/releases/download/v1.2.0/protoc-gen-go-json-x86_64-linux"
     }
   },
-  "version": "2.0.0"
+  "version": "1.2.0"
 }
