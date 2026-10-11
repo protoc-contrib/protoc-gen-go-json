@@ -34,8 +34,8 @@ The code generator has been rewritten on top of
   other Go struct and the JSON is still canonical.
 - Configurable protojson behavior via plugin options (enum rendering, zero
   values, original field names, indentation, tolerance for unknown fields).
-- Per-message / per-enum opt-out via the `(protoc_contrib.json.skip)` and
-  `(protoc_contrib.json.enum_skip)` extensions, so you can hand-roll JSON
+- Per-message / per-enum opt-out via the `(protoc.contrib.json.skip)` and
+  `(protoc.contrib.json.enum_skip)` extensions, so you can hand-roll JSON
   methods for specific types without forking the generator.
 - Respects proto3 optional presence and supports Protobuf Editions 2023.
 
@@ -114,30 +114,40 @@ protoc --go-json_opt=emit_defaults=true,orig_name=true ...
 ## Extensions
 
 For cases where a plugin-wide switch is too coarse, the
-`protoc_contrib.json` package ships two proto extensions that toggle
+`protoc.contrib.json` package ships two proto extensions that toggle
 generation per type:
 
 | Extension                          | Extends                            | Effect                                                                  |
 | ---------------------------------- | ---------------------------------- | ----------------------------------------------------------------------- |
-| `(protoc_contrib.json.skip)`       | `google.protobuf.MessageOptions`   | Skip emitting `MarshalJSON` / `UnmarshalJSON` for a specific message.   |
-| `(protoc_contrib.json.enum_skip)`  | `google.protobuf.EnumOptions`      | Skip emitting `MarshalJSON` / `UnmarshalJSON` for a specific enum.      |
+| `(protoc.contrib.json.skip)`       | `google.protobuf.MessageOptions`   | Skip emitting `MarshalJSON` / `UnmarshalJSON` for a specific message.   |
+| `(protoc.contrib.json.enum_skip)`  | `google.protobuf.EnumOptions`      | Skip emitting `MarshalJSON` / `UnmarshalJSON` for a specific enum.      |
 
 Use them when a message or enum needs a hand-written implementation that
 the protojson-based generator cannot express.
+
+The extensions live in [protoc-types](https://github.com/protoc-contrib/protoc-types),
+shared with the other protoc-contrib plugins, and are published to the Buf
+Schema Registry as `buf.build/protoc-contrib/protoc-types`. Add it to your
+`buf.yaml`:
+
+```yaml
+deps:
+  - buf.build/protoc-contrib/protoc-types
+```
 
 ```proto
 syntax = "proto3";
 package example;
 
-import "protoc_contrib/json/options.proto";
+import "protoc/contrib/json/options.proto";
 
 message Custom {
-  option (protoc_contrib.json.skip) = true;
+  option (protoc.contrib.json.skip) = true;
   string value = 1;
 }
 
 enum Custom_Kind {
-  option (protoc_contrib.json.enum_skip) = true;
+  option (protoc.contrib.json.enum_skip) = true;
   CUSTOM_KIND_UNSPECIFIED = 0;
   CUSTOM_KIND_A = 1;
 }

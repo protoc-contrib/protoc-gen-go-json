@@ -2,12 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: test.proto
+// source: internal/generator/testpb/test.proto
 
 package testpb
 
 import (
-	_ "github.com/protoc-contrib/protoc-gen-go-json/protoc_contrib/json"
+	_ "github.com/protoc-contrib/protoc-types/contrib/json"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -56,11 +56,11 @@ func (x TopLevelKind) String() string {
 }
 
 func (TopLevelKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_test_proto_enumTypes[0].Descriptor()
+	return file_internal_generator_testpb_test_proto_enumTypes[0].Descriptor()
 }
 
 func (TopLevelKind) Type() protoreflect.EnumType {
-	return &file_test_proto_enumTypes[0]
+	return &file_internal_generator_testpb_test_proto_enumTypes[0]
 }
 
 func (x TopLevelKind) Number() protoreflect.EnumNumber {
@@ -69,7 +69,7 @@ func (x TopLevelKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TopLevelKind.Descriptor instead.
 func (TopLevelKind) EnumDescriptor() ([]byte, []int) {
-	return file_test_proto_rawDescGZIP(), []int{0}
+	return file_internal_generator_testpb_test_proto_rawDescGZIP(), []int{0}
 }
 
 // SkippedEnum opts out of JSON method generation.
@@ -103,11 +103,11 @@ func (x SkippedEnum) String() string {
 }
 
 func (SkippedEnum) Descriptor() protoreflect.EnumDescriptor {
-	return file_test_proto_enumTypes[1].Descriptor()
+	return file_internal_generator_testpb_test_proto_enumTypes[1].Descriptor()
 }
 
 func (SkippedEnum) Type() protoreflect.EnumType {
-	return &file_test_proto_enumTypes[1]
+	return &file_internal_generator_testpb_test_proto_enumTypes[1]
 }
 
 func (x SkippedEnum) Number() protoreflect.EnumNumber {
@@ -116,7 +116,7 @@ func (x SkippedEnum) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SkippedEnum.Descriptor instead.
 func (SkippedEnum) EnumDescriptor() ([]byte, []int) {
-	return file_test_proto_rawDescGZIP(), []int{1}
+	return file_internal_generator_testpb_test_proto_rawDescGZIP(), []int{1}
 }
 
 type WithEnum_Kind int32
@@ -152,11 +152,11 @@ func (x WithEnum_Kind) String() string {
 }
 
 func (WithEnum_Kind) Descriptor() protoreflect.EnumDescriptor {
-	return file_test_proto_enumTypes[2].Descriptor()
+	return file_internal_generator_testpb_test_proto_enumTypes[2].Descriptor()
 }
 
 func (WithEnum_Kind) Type() protoreflect.EnumType {
-	return &file_test_proto_enumTypes[2]
+	return &file_internal_generator_testpb_test_proto_enumTypes[2]
 }
 
 func (x WithEnum_Kind) Number() protoreflect.EnumNumber {
@@ -165,7 +165,7 @@ func (x WithEnum_Kind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use WithEnum_Kind.Descriptor instead.
 func (WithEnum_Kind) EnumDescriptor() ([]byte, []int) {
-	return file_test_proto_rawDescGZIP(), []int{2, 0}
+	return file_internal_generator_testpb_test_proto_rawDescGZIP(), []int{2, 0}
 }
 
 // Basic covers scalar fields, oneofs, maps, and proto3 optional presence.
@@ -185,7 +185,7 @@ type Basic struct {
 
 func (x *Basic) Reset() {
 	*x = Basic{}
-	mi := &file_test_proto_msgTypes[0]
+	mi := &file_internal_generator_testpb_test_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -197,7 +197,7 @@ func (x *Basic) String() string {
 func (*Basic) ProtoMessage() {}
 
 func (x *Basic) ProtoReflect() protoreflect.Message {
-	mi := &file_test_proto_msgTypes[0]
+	mi := &file_internal_generator_testpb_test_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -210,7 +210,7 @@ func (x *Basic) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Basic.ProtoReflect.Descriptor instead.
 func (*Basic) Descriptor() ([]byte, []int) {
-	return file_test_proto_rawDescGZIP(), []int{0}
+	return file_internal_generator_testpb_test_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Basic) GetA() string {
@@ -284,7 +284,7 @@ type Nested struct {
 
 func (x *Nested) Reset() {
 	*x = Nested{}
-	mi := &file_test_proto_msgTypes[1]
+	mi := &file_internal_generator_testpb_test_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -296,7 +296,7 @@ func (x *Nested) String() string {
 func (*Nested) ProtoMessage() {}
 
 func (x *Nested) ProtoReflect() protoreflect.Message {
-	mi := &file_test_proto_msgTypes[1]
+	mi := &file_internal_generator_testpb_test_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -309,7 +309,7 @@ func (x *Nested) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Nested.ProtoReflect.Descriptor instead.
 func (*Nested) Descriptor() ([]byte, []int) {
-	return file_test_proto_rawDescGZIP(), []int{1}
+	return file_internal_generator_testpb_test_proto_rawDescGZIP(), []int{1}
 }
 
 // WithEnum exercises enum rendering.
@@ -322,7 +322,7 @@ type WithEnum struct {
 
 func (x *WithEnum) Reset() {
 	*x = WithEnum{}
-	mi := &file_test_proto_msgTypes[2]
+	mi := &file_internal_generator_testpb_test_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -334,7 +334,7 @@ func (x *WithEnum) String() string {
 func (*WithEnum) ProtoMessage() {}
 
 func (x *WithEnum) ProtoReflect() protoreflect.Message {
-	mi := &file_test_proto_msgTypes[2]
+	mi := &file_internal_generator_testpb_test_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -347,7 +347,7 @@ func (x *WithEnum) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WithEnum.ProtoReflect.Descriptor instead.
 func (*WithEnum) Descriptor() ([]byte, []int) {
-	return file_test_proto_rawDescGZIP(), []int{2}
+	return file_internal_generator_testpb_test_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *WithEnum) GetKind() WithEnum_Kind {
@@ -368,7 +368,7 @@ type SkippedMessage struct {
 
 func (x *SkippedMessage) Reset() {
 	*x = SkippedMessage{}
-	mi := &file_test_proto_msgTypes[3]
+	mi := &file_internal_generator_testpb_test_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -380,7 +380,7 @@ func (x *SkippedMessage) String() string {
 func (*SkippedMessage) ProtoMessage() {}
 
 func (x *SkippedMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_test_proto_msgTypes[3]
+	mi := &file_internal_generator_testpb_test_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -393,7 +393,7 @@ func (x *SkippedMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SkippedMessage.ProtoReflect.Descriptor instead.
 func (*SkippedMessage) Descriptor() ([]byte, []int) {
-	return file_test_proto_rawDescGZIP(), []int{3}
+	return file_internal_generator_testpb_test_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *SkippedMessage) GetValue() string {
@@ -412,7 +412,7 @@ type Nested_Message struct {
 
 func (x *Nested_Message) Reset() {
 	*x = Nested_Message{}
-	mi := &file_test_proto_msgTypes[5]
+	mi := &file_internal_generator_testpb_test_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -424,7 +424,7 @@ func (x *Nested_Message) String() string {
 func (*Nested_Message) ProtoMessage() {}
 
 func (x *Nested_Message) ProtoReflect() protoreflect.Message {
-	mi := &file_test_proto_msgTypes[5]
+	mi := &file_internal_generator_testpb_test_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -437,7 +437,7 @@ func (x *Nested_Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Nested_Message.ProtoReflect.Descriptor instead.
 func (*Nested_Message) Descriptor() ([]byte, []int) {
-	return file_test_proto_rawDescGZIP(), []int{1, 0}
+	return file_internal_generator_testpb_test_proto_rawDescGZIP(), []int{1, 0}
 }
 
 func (x *Nested_Message) GetBasic() *Basic {
@@ -447,12 +447,11 @@ func (x *Nested_Message) GetBasic() *Basic {
 	return nil
 }
 
-var File_test_proto protoreflect.FileDescriptor
+var File_internal_generator_testpb_test_proto protoreflect.FileDescriptor
 
-const file_test_proto_rawDesc = "" +
+const file_internal_generator_testpb_test_proto_rawDesc = "" +
 	"\n" +
-	"\n" +
-	"test.proto\x12\x05tests\x1a!protoc_contrib/json/options.proto\"\xbc\x01\n" +
+	"$internal/generator/testpb/test.proto\x12\x05tests\x1a!protoc/contrib/json/options.proto\"\xbc\x01\n" +
 	"\x05Basic\x12\f\n" +
 	"\x01a\x18\x01 \x01(\tR\x01a\x12\x12\n" +
 	"\x03int\x18\x02 \x01(\x05H\x00R\x03int\x12\x12\n" +
@@ -484,20 +483,20 @@ const file_test_proto_rawDesc = "" +
 	"\x0eSKIPPED_ENUM_A\x10\x01\x1a\x04\xe0\xf3\x1a\x01BHZFgithub.com/protoc-contrib/protoc-gen-go-json/internal/generator/testpbb\x06proto3"
 
 var (
-	file_test_proto_rawDescOnce sync.Once
-	file_test_proto_rawDescData []byte
+	file_internal_generator_testpb_test_proto_rawDescOnce sync.Once
+	file_internal_generator_testpb_test_proto_rawDescData []byte
 )
 
-func file_test_proto_rawDescGZIP() []byte {
-	file_test_proto_rawDescOnce.Do(func() {
-		file_test_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_test_proto_rawDesc), len(file_test_proto_rawDesc)))
+func file_internal_generator_testpb_test_proto_rawDescGZIP() []byte {
+	file_internal_generator_testpb_test_proto_rawDescOnce.Do(func() {
+		file_internal_generator_testpb_test_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_internal_generator_testpb_test_proto_rawDesc), len(file_internal_generator_testpb_test_proto_rawDesc)))
 	})
-	return file_test_proto_rawDescData
+	return file_internal_generator_testpb_test_proto_rawDescData
 }
 
-var file_test_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_test_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
-var file_test_proto_goTypes = []any{
+var file_internal_generator_testpb_test_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_internal_generator_testpb_test_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_internal_generator_testpb_test_proto_goTypes = []any{
 	(TopLevelKind)(0),      // 0: tests.TopLevelKind
 	(SkippedEnum)(0),       // 1: tests.SkippedEnum
 	(WithEnum_Kind)(0),     // 2: tests.WithEnum.Kind
@@ -508,7 +507,7 @@ var file_test_proto_goTypes = []any{
 	nil,                    // 7: tests.Basic.MapEntry
 	(*Nested_Message)(nil), // 8: tests.Nested.Message
 }
-var file_test_proto_depIdxs = []int32{
+var file_internal_generator_testpb_test_proto_depIdxs = []int32{
 	7, // 0: tests.Basic.map:type_name -> tests.Basic.MapEntry
 	2, // 1: tests.WithEnum.kind:type_name -> tests.WithEnum.Kind
 	3, // 2: tests.Nested.Message.basic:type_name -> tests.Basic
@@ -519,12 +518,12 @@ var file_test_proto_depIdxs = []int32{
 	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_test_proto_init() }
-func file_test_proto_init() {
-	if File_test_proto != nil {
+func init() { file_internal_generator_testpb_test_proto_init() }
+func file_internal_generator_testpb_test_proto_init() {
+	if File_internal_generator_testpb_test_proto != nil {
 		return
 	}
-	file_test_proto_msgTypes[0].OneofWrappers = []any{
+	file_internal_generator_testpb_test_proto_msgTypes[0].OneofWrappers = []any{
 		(*Basic_Int)(nil),
 		(*Basic_Str)(nil),
 	}
@@ -532,18 +531,18 @@ func file_test_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_test_proto_rawDesc), len(file_test_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_internal_generator_testpb_test_proto_rawDesc), len(file_internal_generator_testpb_test_proto_rawDesc)),
 			NumEnums:      3,
 			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_test_proto_goTypes,
-		DependencyIndexes: file_test_proto_depIdxs,
-		EnumInfos:         file_test_proto_enumTypes,
-		MessageInfos:      file_test_proto_msgTypes,
+		GoTypes:           file_internal_generator_testpb_test_proto_goTypes,
+		DependencyIndexes: file_internal_generator_testpb_test_proto_depIdxs,
+		EnumInfos:         file_internal_generator_testpb_test_proto_enumTypes,
+		MessageInfos:      file_internal_generator_testpb_test_proto_msgTypes,
 	}.Build()
-	File_test_proto = out.File
-	file_test_proto_goTypes = nil
-	file_test_proto_depIdxs = nil
+	File_internal_generator_testpb_test_proto = out.File
+	file_internal_generator_testpb_test_proto_goTypes = nil
+	file_internal_generator_testpb_test_proto_depIdxs = nil
 }
