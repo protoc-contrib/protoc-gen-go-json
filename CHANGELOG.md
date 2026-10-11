@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.1.3...v2.0.0) (2026-10-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* the options are now package protoc.contrib.json, written (protoc.contrib.json.skip) and (protoc.contrib.json.enum_skip), imported as "protoc/contrib/json/options.proto" from buf.build/protoc-contrib/protoc-types. The Go package is github.com/protoc-contrib/protoc-types/contrib/json.
+
+### Features
+
+* read the options from protoc-types ([#33](https://github.com/protoc-contrib/protoc-gen-go-json/issues/33)) ([0af3f4c](https://github.com/protoc-contrib/protoc-gen-go-json/commit/0af3f4cd863f2f372bee043f5f7c0ecd37a5225e))
+
 ## [1.1.3](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.1.2...v1.1.3) (2026-05-05)
 
 
