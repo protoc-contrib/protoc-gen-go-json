@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	json "github.com/protoc-contrib/protoc-gen-go-json/protoc_contrib/json"
+	json "github.com/protoc-contrib/protoc-types/contrib/json"
 )
 
 const (

@@ -58,7 +58,7 @@ func emittedContent(resp *pluginpb.CodeGeneratorResponse) string {
 
 var _ = Describe("generator.Generate", func() {
 	It("emits MarshalJSON and UnmarshalJSON for every message including nested ones", func() {
-		resp, err := runGenerator(nil, testpb.File_test_proto)
+		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 		Expect(resp.Error).To(BeNil())
 		Expect(resp.File).To(HaveLen(1))
@@ -74,7 +74,7 @@ var _ = Describe("generator.Generate", func() {
 	})
 
 	It("skips synthetic map entry messages", func() {
-		resp, err := runGenerator(nil, testpb.File_test_proto)
+		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -82,7 +82,7 @@ var _ = Describe("generator.Generate", func() {
 	})
 
 	It("defaults every protojson flag to false when no options are set", func() {
-		resp, err := runGenerator(nil, testpb.File_test_proto)
+		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -93,7 +93,7 @@ var _ = Describe("generator.Generate", func() {
 	})
 
 	It("matches the checked-in golden output for the testpb fixture", func() {
-		resp, err := runGenerator(nil, testpb.File_test_proto)
+		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 		Expect(resp.File).To(HaveLen(1))
 
@@ -114,7 +114,7 @@ var _ = Describe("generator.Generate", func() {
 			OrigName:           true,
 			AllowUnknownFields: true,
 		}
-		resp, err := runGenerator(opts, testpb.File_test_proto)
+		resp, err := runGenerator(opts, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -125,7 +125,7 @@ var _ = Describe("generator.Generate", func() {
 	})
 
 	It("honors the json.skip message extension", func() {
-		resp, err := runGenerator(nil, testpb.File_test_proto)
+		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -133,7 +133,7 @@ var _ = Describe("generator.Generate", func() {
 	})
 
 	It("honors the json.enum_skip enum extension", func() {
-		resp, err := runGenerator(nil, testpb.File_test_proto)
+		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -141,7 +141,7 @@ var _ = Describe("generator.Generate", func() {
 	})
 
 	It("emits MarshalJSON and UnmarshalJSON for top-level and nested enums", func() {
-		resp, err := runGenerator(nil, testpb.File_test_proto)
+		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -153,7 +153,7 @@ var _ = Describe("generator.Generate", func() {
 	})
 
 	It("renders enums via their string names by default", func() {
-		resp, err := runGenerator(nil, testpb.File_test_proto)
+		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -163,7 +163,7 @@ var _ = Describe("generator.Generate", func() {
 
 	It("renders enums as integers when enums_as_ints is set", func() {
 		opts := &generator.Options{EnumsAsInts: true}
-		resp, err := runGenerator(opts, testpb.File_test_proto)
+		resp, err := runGenerator(opts, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -173,7 +173,7 @@ var _ = Describe("generator.Generate", func() {
 
 	It("emits Multiline and Indent when indent option is set", func() {
 		opts := &generator.Options{Indent: "  "}
-		resp, err := runGenerator(opts, testpb.File_test_proto)
+		resp, err := runGenerator(opts, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
@@ -182,7 +182,7 @@ var _ = Describe("generator.Generate", func() {
 	})
 
 	It("omits Multiline and Indent when indent is empty", func() {
-		resp, err := runGenerator(nil, testpb.File_test_proto)
+		resp, err := runGenerator(nil, testpb.File_internal_generator_testpb_test_proto)
 		Expect(err).NotTo(HaveOccurred())
 
 		out := emittedContent(resp)
