@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.2.0...v1.3.0) (2026-11-07)
+
+
+### Features
+
+* **ci:** push the Nix build to Cachix, and merge with the App token ([#46](https://github.com/protoc-contrib/protoc-gen-go-json/issues/46)) ([8ada646](https://github.com/protoc-contrib/protoc-gen-go-json/commit/8ada64644ef0b8417473acb6048cf46f69d8afda))
+
 ## [1.2.0](https://github.com/protoc-contrib/protoc-gen-go-json/compare/v1.1.3...v1.2.0) (2026-10-11)
 
 
